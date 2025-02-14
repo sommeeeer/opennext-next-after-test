@@ -1,13 +1,13 @@
-import { unstable_after as after } from 'next/server';
+import { after } from 'next/server';
 
 export async function GET() {
   console.log('hi ho');
-  after(async () => {
-    console.log('after start');
-    const now = new Date();
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    await fetch('http://localhost:3030?date=' + now.toISOString());
-    console.log('after end');
-  });
-  return Response.json({ status: 'ok' });
+  after(() => console.log('after'));
+  after(() =>
+    setTimeout(
+      () => console.log('after timeout, time: ' + new Date().toISOString()),
+      5000
+    )
+  );
+  return Response.json({ status: 'ok', time: new Date().toISOString() });
 }
